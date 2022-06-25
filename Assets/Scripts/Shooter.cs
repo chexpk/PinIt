@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
-    [SerializeField] private GameObject stick;
+    [SerializeField] private GameObject stickPref;
     [SerializeField] private float powerOfShoot = 100;
     private Camera mainCamera;
+    private bool isLoaded = false;
+    private Vector3 speed = Vector3.zero;
     
     // Start is called before the first frame update
     void Start()
@@ -19,17 +21,22 @@ public class Shooter : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
+            isLoaded = true;
             var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            new Plane(Vector3.forward, new Vector3(transform.position.x, transform.position.y, transform.position.z + 10)).Raycast(ray, out var enter);
+            new Plane(-Vector3.forward, new Vector3(transform.position.x, transform.position.y, transform.position.z + 500)).Raycast(ray, out var enter);
             var mouseInWorldPos = ray.GetPoint(enter);
 
-            var speed = (mouseInWorldPos - transform.position) * powerOfShoot;
+            speed = (mouseInWorldPos - transform.position) * powerOfShoot;
             transform.rotation = Quaternion.LookRotation(speed);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (isLoaded && Input.touchCount < 1)
         {
+            isLoaded = false;
+            var stickRigidbody = Instantiate(stickPref, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            stickRigidbody.AddForce(speed, ForceMode.Impulse);
             
         }
+        
     }
 }
