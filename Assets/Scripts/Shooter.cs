@@ -12,7 +12,7 @@ public class Shooter : MonoBehaviour
     private Camera mainCamera;
     private bool isLoaded = false;
     private Vector3 speed = Vector3.zero;
-
+    private AudioSource shootSound;
 
     private Transform selfTransform;
     private int widthScreen;
@@ -33,6 +33,7 @@ public class Shooter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shootSound = GetComponent<AudioSource>();
         selfTransform = transform;
         widthScreen = Screen.width;
         mainCamera = Camera.main;
@@ -85,6 +86,12 @@ public class Shooter : MonoBehaviour
             var stickRigidbody = Instantiate(stickPref, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
             stickRigidbody.AddForce(speed, ForceMode.VelocityChange);
             trajectoryRenderer.DeleteTrajectory();
+            PlayShootSound();
         }
+    }
+
+    void PlayShootSound()
+    {
+        shootSound.Play();
     }
 }

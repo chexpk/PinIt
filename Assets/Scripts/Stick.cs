@@ -7,8 +7,10 @@ public class Stick : MonoBehaviour
 {
     [SerializeField] private Transform[] pointToStickmanTransforms;
     [SerializeField] private bool[] isPointsFree;
-
-    private List<GameObject> stikemansOnStick;
+    [SerializeField] private GameObject contactSound;
+    [SerializeField] private GameObject destroySound;
+    [SerializeField] private float delayToDestroy = 5f;
+    private List<GameObject> stikemansOnStick = new List<GameObject>();
     // private List<bool> isPointsFree;
     Rigidbody rb;
     bool isHitSomething = false;
@@ -52,6 +54,13 @@ public class Stick : MonoBehaviour
                 var pointTransform = GetFreePoint();
                 if(pointTransform == null) return;
                 stickFollower.SetTarget(pointTransform);
+                CreateContactSoundGO();
+                stikemansOnStick.Add(other.transform.root.gameObject);
+                // Debug.Log(other.gameObject.GetComponent<DestroyScript>());
+                // Destroy(other.gameObject.GetComponent<DestroyScript>());
+                DestroyScript destroyScript;
+                Debug.Log("IsDestroyScriptExist "+ other.transform.root.gameObject.TryGetComponent(out destroyScript));
+                Destroy(destroyScript);
                 return;
             }
             return;
@@ -60,7 +69,13 @@ public class Stick : MonoBehaviour
         if (environment != null)
         {
             StickIn();
-            Destroy(gameObject, 5f);
+            Debug.Log("stikemansOnStick.Count " + stikemansOnStick.Count);
+            if (stikemansOnStick.Count > 0)
+            {
+                Invoke(nameof(DestroyStickAndStickMans), delayToDestroy);
+                return;
+            }
+            Destroy(gameObject, 3f);
         }
 
     }
@@ -82,5 +97,26 @@ public class Stick : MonoBehaviour
             }
         }
         return null;
+    }
+
+    void CreateContactSoundGO()
+    {
+        Instantiate(contactSound);
+    }
+
+    void DestroyStickAndStickMans()
+    {
+        CreateDestroySoundGO();
+        foreach (var stickman in stikemansOnStick)
+        {
+            if(stickman == null) continue;
+            Destroy(stickman);
+        }
+        Destroy(gameObject);
+    }
+
+    void CreateDestroySoundGO()
+    {
+        Instantiate(destroySound);
     }
 }

@@ -602,3 +602,8 @@ MonoBehaviour:
   - {fileID: 4870946267937623223}
   - {fileID: 5653830541130122098}
   isPointsFree: 01010101
+  contactSound: {fileID: 7097457207131435597, guid: 22122da872b2c44bd81c69bdf8320090,
+    type: 3}
+  destroySound: {fileID: 7097457207131435597, guid: b44506f10816e403588de6a52aa70b85,
+    type: 3}
+  delayToDestroy: 5
