@@ -3336,7 +3336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystick: {fileID: 8170153792871887634}
   trajectoryRenderer: {fileID: 374006292}
-  stickPref: {fileID: 8880237573635825040, guid: 58de9655a27334253a94b7d49a90a92b,
+  stickPref: {fileID: 8880237573635825040, guid: ec86d1dab0c6e4126b39d20723d50c30,
     type: 3}
   powerOfShoot: 0.28
   speedOfMoveStick: 10
@@ -4470,7 +4470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handleRange: 1
-  deadZone: 0.1
+  deadZone: 0.02
   axisOptions: 0
   snapX: 0
   snapY: 0
