@@ -187,10 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e549dfa9d0ff24ef1bb7724eaf6faf48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allRigidbodies:
-  - {fileID: 7940596832506850372}
-  - {fileID: 6910104938358598375}
-  - {fileID: 1414937668867956575}
+  allRigidbodie: {fileID: 7940596832506850372}
 --- !u!1 &2050364390194767339
 GameObject:
   m_ObjectHideFlags: 0

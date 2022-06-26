@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PushStickman : MonoBehaviour
 {
-    [SerializeField] private Rigidbody[] allRigidbodies;
+    [SerializeField] private Rigidbody allRigidbodie;
     // [SerializeField] private float pushForce = 10f;
     // [SerializeField] private float torqueForce = 10f;
     
@@ -21,20 +21,19 @@ public class PushStickman : MonoBehaviour
 
     void SetKinematic(bool isKinematic)
     {
-        foreach (var rb in allRigidbodies)
-        {
-            rb.isKinematic = isKinematic;
-        }
+       
+        
+            allRigidbodie.isKinematic = isKinematic;
+        
     }
 
 
-    public void Push(Vector3 directionOfPush, float pushForce)
+    public void Push(Vector3 directionOfPush, float pushForce, float torqueForce)
     {
         SetKinematic(false);
-        foreach (var rb in allRigidbodies)
-        {
-            rb.AddForce(directionOfPush * pushForce, ForceMode.Impulse);
-            // rb.AddTorque(new Vector3(0, 0, 90) * torqueForce, ForceMode.Impulse);
-        }
+
+            allRigidbodie.AddForce(directionOfPush * pushForce, ForceMode.Impulse);
+            // allRigidbodie.AddTorque(new Vector3(0, 0, 0) * torqueForce, ForceMode.VelocityChange);
+        
     }
 }

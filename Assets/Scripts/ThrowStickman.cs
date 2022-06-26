@@ -7,6 +7,7 @@ public class ThrowStickman : MonoBehaviour
     [SerializeField] private Transform[] transformOfThrowPoint;
     [SerializeField] private GameObject stickmanPref;
     [SerializeField] private float pushForce = 10f;
+    [SerializeField] private float torqueForce = 2f;
     private float time = 0;
     [SerializeField] private float delayTime = 1;
     
@@ -33,7 +34,7 @@ public class ThrowStickman : MonoBehaviour
         foreach (var pointTransform in transformOfThrowPoint)
         {
             var stickman = Instantiate(stickmanPref, pointTransform.position, Quaternion.identity);
-            stickman.GetComponent<PushStickman>().Push(pointTransform.forward, pushForce);
+            stickman.GetComponent<PushStickman>().Push(pointTransform.forward, pushForce, torqueForce);
         }
     }
 }
