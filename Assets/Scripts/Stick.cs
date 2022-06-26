@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class Stick : MonoBehaviour
 {
+    [SerializeField] private Transform[] pointToStickmanTransforms;
+    [SerializeField] private bool[] isPointsFree;
+
+    private List<GameObject> stikemansOnStick;
+    // private List<bool> isPointsFree;
     Rigidbody rb;
     bool isHitSomething = false;
     private Vector3 rbVelocity = Vector3.zero;
+    
 
     void Awake()
     {
@@ -36,16 +42,16 @@ public class Stick : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-
+        if(isHitSomething) return;
         var stickFeeler =  other.gameObject.GetComponent<StickFeeler>();
         if (stickFeeler != null)
         {
-            // Debug.Log("stickFeeler is detected");
             var stickFollower = stickFeeler.ReturnStickFollower();
             if (!stickFollower.IsFollow())
             {
-                // Debug.Log("Stick ask man to follow");
-                stickFollower.SetTarget(transform);
+                var pointTransform = GetFreePoint();
+                if(pointTransform == null) return;
+                stickFollower.SetTarget(pointTransform);
                 return;
             }
             return;
@@ -56,14 +62,25 @@ public class Stick : MonoBehaviour
             StickIn();
             Destroy(gameObject, 5f);
         }
-        // StickIn();
-        // Destroy(gameObject, 5f);
-    }
 
+    }
 
     void StickIn()
     {
         isHitSomething = true;
         rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    Transform GetFreePoint()
+    {
+        for (int i = 0; i < isPointsFree.Length; i++)
+        {
+            if (isPointsFree[i])
+            {
+                isPointsFree[i] = false;
+                return pointToStickmanTransforms[i];
+            }
+        }
+        return null;
     }
 }

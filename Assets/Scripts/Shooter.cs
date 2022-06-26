@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Shooter : MonoBehaviour
 {
+    [SerializeField] private GameObject simulateGo;
     [SerializeField] private Joystick joystick;
     [SerializeField] private TrajectoryRenderer trajectoryRenderer;
     [SerializeField] private GameObject stickPref;
@@ -16,10 +17,10 @@ public class Shooter : MonoBehaviour
     private Transform selfTransform;
     private int widthScreen;
     
-    private float maxX = 8;
-    private float minX = -8;
-    private float minPower = 0.27f;
-    private float maxPower = 0.6f;
+    [SerializeField] private float maxX = 8;
+    [SerializeField] private float minX = -8;
+    [SerializeField] private float minPower = 0.27f;
+    [SerializeField] private float maxPower = 0.8f;
     
     
     [SerializeField] public float speedOfMoveStick = 10f;
@@ -40,62 +41,10 @@ public class Shooter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (Input.touchCount > 0)
-        // {
-        //     isLoaded = true;
-        //     var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        //     new Plane(-Vector3.forward, new Vector3(transform.position.x, transform.position.y, transform.position.z + 500)).Raycast(ray, out var enter);
-        //     var mouseInWorldPos = ray.GetPoint(enter);
-        //
-        //     speed = (mouseInWorldPos - transform.position) * powerOfShoot;
-        //     transform.rotation = Quaternion.LookRotation(speed);
-        //     
-        //     trajectoryRenderer.ShowTrajectory(transform.position, speed);
-        // }
-        //
-        // if (isLoaded && Input.touchCount < 1)
-        // {
-        //     isLoaded = false;
-        //     var stickRigidbody = Instantiate(stickPref, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-        //     stickRigidbody.AddForce(speed, ForceMode.VelocityChange);
-        //     trajectoryRenderer.DeleteTrajectory();
-        // }
-        // Test();
-        TestJoystick();
+        JoystickControl();
     }
-
-    void Test()
-    {
-        if (Input.touchCount > 0)
-        {
-            float xPos;
-            Touch touch = Input.GetTouch(0);
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    startingPosition = touch.position.x;
-                    // xPos = Mathf.Lerp(minX, maxX, startingPosition / widthScreen);
-                    // selfTransform.position = new Vector3(xPos, selfTransform.position.y, selfTransform.position.z);
-                    break;
-                case TouchPhase.Moved:
-                    float touchPos = touch.position.x/widthScreen;
-                    xPos = Mathf.Lerp(minX, maxX, touchPos);
-                    var targetPos = new Vector3(xPos, selfTransform.position.y, selfTransform.position.z);
-                    selfTransform.position = new Vector3(xPos, selfTransform.position.y, selfTransform.position.z);
-                    var step =  speedOfMoveStick * Time.deltaTime;
-                    transform.position = Vector3.MoveTowards(transform.position, targetPos, step);
-                    break;
-                case TouchPhase.Ended:
-                    Debug.Log("Touch Phase Ended.");
-                    break;
-                case TouchPhase.Stationary:
-                    startingPosition = touch.position.x;
-                    break;
-            }
-        }
-    }
-
-    void TestJoystick()
+    
+    void JoystickControl()
     {
         moveX = joystick.Horizontal;
         powerY = joystick.Vertical;
