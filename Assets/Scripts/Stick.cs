@@ -6,6 +6,7 @@ public class Stick : MonoBehaviour
 {
     Rigidbody rb;
     bool isHitSomething = false;
+    private Vector3 rbVelocity = Vector3.zero;
 
     void Awake()
     {
@@ -14,7 +15,9 @@ public class Stick : MonoBehaviour
 
     void Start()
     {
-        transform.rotation = Quaternion.LookRotation(rb.velocity);
+        rbVelocity = rb.velocity;
+        if(rbVelocity == Vector3.zero) return;
+        transform.rotation = Quaternion.LookRotation(rbVelocity);
     }
 
     void Update()
@@ -25,12 +28,14 @@ public class Stick : MonoBehaviour
     void RotateByMoveDirection()
     {
         if (isHitSomething) return;
-        transform.rotation = Quaternion.LookRotation(rb.velocity);
+        rbVelocity = rb.velocity;
+        if(rbVelocity == Vector3.zero) return;
+        transform.rotation = Quaternion.LookRotation(rbVelocity);
     }
 
     void OnCollisionEnter(Collision other)
     {
-        Debug.Log(other.gameObject);
+        // Debug.Log(other.gameObject);
         StickIn();
         Destroy(gameObject, 5f);
     }
